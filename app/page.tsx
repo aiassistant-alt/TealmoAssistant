@@ -1,12 +1,77 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Spline from '@splinetool/react-spline/next';
 
 export default function Home() {
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
-  const [modulesDropdownOpen, setModulesDropdownOpen] = useState(false);
+  const [modulesDropdownOpen, setModulesDropdownOpen] = useState(true);
+  const [splineLoaded, setSplineLoaded] = useState(false);
+  const [splineError, setSplineError] = useState(false);
+
+  // Función para ocultar el logo de Spline después del mounting
+  useEffect(() => {
+    const hideSplineLogo = () => {
+      // Buscar y ocultar cualquier elemento que pueda ser el logo de Spline
+      const splineElements = document.querySelectorAll(`
+        a[href*="spline.design"],
+        a[href*="spline"],
+        div[style*="position: absolute"][style*="bottom"],
+        div[style*="position: fixed"][style*="bottom"],
+        *[style*="z-index: 999999"],
+        *[style*="z-index: 9999"]
+      `);
+
+      splineElements.forEach(el => {
+        if (el) {
+          el.style.display = 'none';
+          el.style.visibility = 'hidden';
+          el.style.opacity = '0';
+          el.style.pointerEvents = 'none';
+          el.style.position = 'absolute';
+          el.style.left = '-9999px';
+          el.style.top = '-9999px';
+          el.style.width = '0';
+          el.style.height = '0';
+          el.style.zIndex = '-1';
+        }
+      });
+    };
+
+    // Ejecutar inmediatamente
+    hideSplineLogo();
+
+    // Ejecutar periódicamente para capturar elementos dinámicos
+    const interval = setInterval(hideSplineLogo, 1000);
+
+    // Limpiar interval al desmontar
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleSplineLoad = () => {
+    console.log('✅ Spline cargado exitosamente');
+    setSplineLoaded(true);
+    setSplineError(false);
+  };
+
+  const handleSplineError = () => {
+    console.error('❌ Error cargando Spline');
+    setSplineError(true);
+    setSplineLoaded(false);
+  };
+
+  // Timeout para fallback si Spline no carga
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!splineLoaded && !splineError) {
+        console.warn('⚠️ Spline timeout - mostrando fallback');
+        setSplineError(true);
+      }
+    }, 15000); // 15 segundos timeout
+
+    return () => clearTimeout(timeout);
+  }, [splineLoaded, splineError]);
   return (
     <main className="app-container">
       {/* Botones para reabrir sidebars */}
@@ -35,19 +100,18 @@ export default function Home() {
       {leftSidebarOpen && (
         <div className="sidebar sidebar-left">
           <div className="sidebar-frame">
-            <div className="sidebar-header-frame">
+            <div className={`sidebar-header-frame ${modulesDropdownOpen ? 'dropdown-open' : ''}`}>
               <div 
                 className="dropdown-trigger"
                 onClick={() => setModulesDropdownOpen(!modulesDropdownOpen)}
               >
-                <h2>Modules</h2>
-                <div className="dropdown-arrow">
+                <h2>📚 Modules {modulesDropdownOpen ? '(' + 6 + ')' : ''}</h2>
+                <div className={`dropdown-arrow ${modulesDropdownOpen ? 'rotated' : ''}`}>
                   <svg 
                     width="14" 
                     height="14" 
                     viewBox="0 0 24 24" 
                     fill="none"
-                    className={modulesDropdownOpen ? 'rotated' : ''}
                   >
                     <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -64,9 +128,8 @@ export default function Home() {
             </div>
           </div>
           
-          {modulesDropdownOpen && (
-            <div className="sidebar-frame">
-              <div className="sidebar-content">
+          <div className={`sidebar-frame modules-dropdown ${modulesDropdownOpen ? '' : 'closed'}`}>
+            <div className="sidebar-content">
                 <div className="lesson-card active">
                   <div className="lesson-number">01</div>
                   <div className="lesson-info">
@@ -111,15 +174,29 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       )}
 
-      {/* Contenido Central - Spline */}
+            {/* Contenido Central - Spline */}
       <div className={`main-content ${!leftSidebarOpen ? 'expand-left' : ''} ${!rightSidebarOpen ? 'expand-right' : ''}`}>
-        <Spline
-          scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode" 
-        />
+        {splineError ? (
+          // Fallback visual cuando Spline falla
+          <div className="spline-fallback">
+            <div className="spline-placeholder">
+              <div className="spline-placeholder-text">
+                ✨ English Learning<br/>Assistant
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Spline
+            scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode"
+            onLoad={handleSplineLoad}
+            onError={handleSplineError}
+            style={{ width: '100%', height: '100%' }}
+          />
+        )}
       </div>
 
       {/* Sidebar Derecho - Search & Sources */}
