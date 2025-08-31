@@ -1,8 +1,195 @@
-html,
-body,
-main {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+/* Reset y configuración básica */
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #f0f0f3 0%, #e8e8ed 100%);
+  overflow: hidden;
+}
+
+/* Contenedor principal con layout de 3 columnas */
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, #f0f0f3 0%, #e8e8ed 100%);
+}
+
+/* Sidebars neumórficos (20% cada uno) */
+.sidebar {
+  width: 20%;
+  height: 100vh;
+  background: linear-gradient(145deg, #f0f0f3, #d1d1d6);
+  box-shadow: 
+    inset 20px 20px 60px #cbcbd0,
+    inset -20px -20px 60px #ffffff;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+  position: relative;
+}
+
+.sidebar-left {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-right {
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Contenido de los sidebars */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+/* Tarjetas neumórficas */
+.neomorphic-card {
+  background: linear-gradient(145deg, #f0f0f3, #d1d1d6);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 
+    20px 20px 60px #cbcbd0,
+    -20px -20px 60px #ffffff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.neomorphic-card:hover {
+  box-shadow: 
+    25px 25px 80px #c5c5ca,
+    -25px -25px 80px #ffffff;
+  transform: translateY(-2px);
+}
+
+.neomorphic-card:active {
+  box-shadow: 
+    inset 15px 15px 30px #cbcbd0,
+    inset -15px -15px 30px #ffffff;
+  transform: translateY(1px);
+}
+
+.neomorphic-card h3 {
+  color: #4a4a4a;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.neomorphic-card p {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+/* Contenido central - Spline (60%) */
+.main-content {
+  width: 60%;
+  height: 100vh;
+  position: relative;
+  background: linear-gradient(135deg, #f8f8fb 0%, #e8e8ed 100%);
+  box-shadow: 
+    inset 5px 5px 20px rgba(203, 203, 208, 0.3),
+    inset -5px -5px 20px rgba(255, 255, 255, 0.8);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+/* Efectos de bordes internos suaves */
+.main-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  z-index: 10;
+}
+
+.main-content::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(203, 203, 208, 0.4), transparent);
+  z-index: 10;
+}
+
+/* Responsividad para tablets */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 15%;
+    padding: 1rem 0.5rem;
+  }
+  
+  .main-content {
+    width: 70%;
+  }
+  
+  .neomorphic-card {
+    padding: 1rem;
+    border-radius: 15px;
+  }
+  
+  .neomorphic-card h3 {
+    font-size: 1rem;
+  }
+  
+  .neomorphic-card p {
+    font-size: 0.8rem;
+  }
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: 15vh;
+    padding: 0.5rem;
+  }
+  
+  .sidebar-content {
+    flex-direction: row;
+    gap: 1rem;
+    overflow-x: auto;
+  }
+  
+  .main-content {
+    width: 100%;
+    height: 70vh;
+  }
+  
+  .neomorphic-card {
+    min-width: 120px;
+    padding: 0.8rem;
+    border-radius: 12px;
+  }
+  
+  .neomorphic-card h3 {
+    font-size: 0.9rem;
+  }
+  
+  .neomorphic-card p {
+    font-size: 0.75rem;
+  }
 }
