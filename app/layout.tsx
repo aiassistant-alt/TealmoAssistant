@@ -2,8 +2,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'TealmoAssistant',
-  description: 'AI Voice Assistant with 3D Spline Interface',
+  title: 'TealmoAssistant - English Course',
+  description: 'Interactive English Learning Platform with AI Voice Assistant and 3D Interface',
 };
 
 export default function RootLayout({
