@@ -14,9 +14,7 @@ export default function Home() {
             <div className="lesson-info">
               <h3>Greetings & Introductions</h3>
               <p>Basic conversations</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{width: '100%'}}></div>
-              </div>
+
             </div>
           </div>
           <div className="lesson-card">
@@ -24,9 +22,7 @@ export default function Home() {
             <div className="lesson-info">
               <h3>Family & Friends</h3>
               <p>Describing people</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{width: '75%'}}></div>
-              </div>
+
             </div>
           </div>
           <div className="lesson-card">
@@ -34,9 +30,7 @@ export default function Home() {
             <div className="lesson-info">
               <h3>Daily Routines</h3>
               <p>Present simple tense</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{width: '45%'}}></div>
-              </div>
+
             </div>
           </div>
           <div className="lesson-card">
@@ -44,9 +38,7 @@ export default function Home() {
             <div className="lesson-info">
               <h3>Food & Dining</h3>
               <p>Restaurant vocabulary</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{width: '20%'}}></div>
-              </div>
+
             </div>
           </div>
           <div className="lesson-card locked">
@@ -54,9 +46,7 @@ export default function Home() {
             <div className="lesson-info">
               <h3>Travel & Directions</h3>
               <p>Getting around</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{width: '0%'}}></div>
-              </div>
+
             </div>
           </div>
           <div className="lesson-card locked">
@@ -64,9 +54,7 @@ export default function Home() {
             <div className="lesson-info">
               <h3>Work & Business</h3>
               <p>Professional English</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{width: '0%'}}></div>
-              </div>
+
             </div>
           </div>
         </div>
