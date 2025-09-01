@@ -228,20 +228,53 @@ export default function Home() {
       {/* Contenido Central - Spline */}
       <div className="main-content">
         <div className="spline-container">
+          <div className="spline-debug">
+            <p>🔍 Debug: Spline container active</p>
+            <p>📍 Scene URL: jpptJsbqA5KYoI05</p>
+          </div>
+          
           <Spline
             scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode"
             onLoad={(spline) => {
               splineRef.current = spline;
-              console.log('🎯 Spline loaded successfully');
+              console.log('🎯 Spline loaded successfully', spline);
+              // Ocultar debug cuando carga
+              const debug = document.querySelector('.spline-debug');
+              if (debug) debug.style.display = 'none';
             }}
             onError={(error) => {
               console.error('❌ Spline loading error:', error);
+              // Mostrar error en debug
+              const debug = document.querySelector('.spline-debug');
+              if (debug) {
+                debug.innerHTML = `
+                  <p>❌ Error loading Spline</p>
+                  <p>Error: ${error.message || 'Unknown error'}</p>
+                  <p>Trying alternative scene...</p>
+                `;
+              }
             }}
+            style={{ width: '100%', height: '100%' }}
           />
+          
           <div className="spline-fallback">
             <div className="loading-indicator">
               <div className="loading-spinner"></div>
               <p>Loading 3D Assistant...</p>
+              <p className="debug-info">If this takes too long, there might be a network issue</p>
+            </div>
+            
+            {/* Fallback 3D CSS cuando Spline falla */}
+            <div className="css-3d-fallback">
+              <div className="floating-orb">
+                <div className="orb-inner"></div>
+                <div className="orb-glow"></div>
+              </div>
+              <div className="assistant-text">
+                <h3>AI Voice Assistant</h3>
+                <p>Ready to help you learn English</p>
+                <p className="status">Click the microphone to start</p>
+              </div>
             </div>
           </div>
         </div>

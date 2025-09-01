@@ -400,6 +400,134 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #f8f8fb 0%, #e8e8ed 100%);
+}
+
+/* Debug de Spline */
+.spline-debug {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.spline-debug p {
+  margin: 0.2rem 0;
+}
+
+.debug-info {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-top: 0.5rem;
+}
+
+/* Fallback 3D con CSS puro */
+.css-3d-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  z-index: 5;
+  opacity: 0;
+  animation: fadeInFallback 2s ease 3s forwards;
+}
+
+@keyframes fadeInFallback {
+  to { opacity: 1; }
+}
+
+/* Orbe flotante 3D */
+.floating-orb {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 2rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotateY(0deg); }
+  50% { transform: translateY(-20px) rotateY(180deg); }
+}
+
+.orb-inner {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  background-size: 400% 400%;
+  border-radius: 50%;
+  position: relative;
+  animation: gradientShift 4s ease infinite;
+  box-shadow: 
+    0 0 30px rgba(102, 126, 234, 0.5),
+    inset 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.orb-glow {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Texto del asistente */
+.assistant-text {
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
+
+.assistant-text h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #fff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.assistant-text p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+}
+
+.assistant-text .status {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 0.7; }
+  75% { opacity: 1; }
+  100% { opacity: 0.7; }
 }
 
 /* Fallback cuando Spline no carga */
