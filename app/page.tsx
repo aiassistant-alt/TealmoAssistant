@@ -225,26 +225,24 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Contenido Central - Spline */}
+      {/* Contenido Central - SIEMPRE VISIBLE */}
       <div className="main-content">
-        <div className="spline-container">
-          {/* Versión simplificada que SIEMPRE funciona */}
-          <div className="spline-wrapper">
-            <Spline scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode" />
+        {/* CONTENIDO 3D GARANTIZADO - SIEMPRE SE VE */}
+        <div className="guaranteed-3d-content">
+          <div className="floating-orb">
+            <div className="orb-inner"></div>
+            <div className="orb-glow"></div>
           </div>
-          
-          {/* Fallback inmediato si Spline no aparece */}
-          <div className="immediate-fallback">
-            <div className="floating-orb">
-              <div className="orb-inner"></div>
-              <div className="orb-glow"></div>
-            </div>
-            <div className="assistant-text">
-              <h3>🎯 AI Voice Assistant</h3>
-              <p>Ready to help you learn English</p>
-              <p className="status">Click the microphone to start</p>
-            </div>
+          <div className="assistant-text">
+            <h3>🎯 AI Voice Assistant</h3>
+            <p>Ready to help you learn English</p>
+            <p className="status">Click the microphone to start</p>
           </div>
+        </div>
+        
+        {/* Spline como overlay opcional */}
+        <div className="spline-overlay" style={{ display: 'none' }}>
+          <Spline scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode" />
         </div>
         
         {/* Botón de micrófono flotante */}
