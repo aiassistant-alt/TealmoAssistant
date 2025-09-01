@@ -1,6 +1,43 @@
+'use client';
+
 import Spline from '@splinetool/react-spline/next';
+import { useEffect } from 'react';
 
 export default function Home() {
+  useEffect(() => {
+    // Función para ocultar el badge de Spline
+    const hideSplineBadge = () => {
+      // Buscar y ocultar elementos con texto "Built with Spline"
+      const elements = document.querySelectorAll('a[href*="spline"], div[style*="bottom"], div[style*="z-index"]');
+      elements.forEach(el => {
+        const element = el as HTMLElement;
+        if (element.textContent?.includes('Built with Spline') || 
+            element.textContent?.includes('Spline') ||
+            element.getAttribute('href')?.includes('spline.design')) {
+          element.style.display = 'none';
+          element.style.visibility = 'hidden';
+          element.style.opacity = '0';
+          element.style.pointerEvents = 'none';
+          // También ocultar el elemento padre si existe
+          if (element.parentElement) {
+            element.parentElement.style.display = 'none';
+          }
+        }
+      });
+    };
+
+    // Ejecutar inmediatamente
+    hideSplineBadge();
+    
+    // Ejecutar periódicamente para capturar elementos cargados dinámicamente
+    const interval = setInterval(hideSplineBadge, 100);
+    
+    // Limpiar después de 5 segundos (cuando ya debería estar todo cargado)
+    setTimeout(() => clearInterval(interval), 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <main className="app-container">
       {/* Módulos del Curso de Inglés */}

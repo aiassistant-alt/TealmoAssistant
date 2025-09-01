@@ -376,16 +376,35 @@ body {
   overflow: hidden;
 }
 
-/* Ocultar el badge "Built with Spline" */
-.main-content > div > div[style*="position: absolute"][style*="bottom: 0"][style*="right: 0"],
-.main-content > div > a[href*="spline.design"],
-.main-content > div > div > a[href*="spline.design"],
+/* Ocultar el badge "Built with Spline" - Solución agresiva */
+.main-content > div > div[style*="position: absolute"][style*="bottom"],
+.main-content > div > div[style*="position: fixed"][style*="bottom"],
+.main-content > div > a[href*="spline"],
+.main-content > div > div > a[href*="spline"],
+.main-content a[href*="spline.design"],
+.main-content div[style*="bottom"][style*="right"],
+.main-content div[style*="bottom: 0"],
+.main-content div[style*="z-index: 9999"],
+.main-content div[style*="z-index: 2147483647"],
 [data-spline-watermark],
-div[style*="z-index: 2147483647"] {
+div:has(> a[href*="spline.design"]) {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+}
+
+/* Ocultar específicamente elementos en la parte inferior */
+.main-content > div > :last-child:not(canvas),
+.main-content > div > div:last-of-type:has(a),
+.main-content canvas ~ * {
+  display: none !important;
 }
 
 /* Efectos de bordes internos suaves */
