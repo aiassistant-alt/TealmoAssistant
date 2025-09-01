@@ -1,9 +1,101 @@
 'use client';
 
 import Spline from '@splinetool/react-spline/next';
-import { useEffect } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 export default function Home() {
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
+  const [isModulesOpen, setIsModulesOpen] = useState(true);
+  const [isMicActive, setIsMicActive] = useState(false);
+  const [audioLevel, setAudioLevel] = useState(0);
+  const splineRef = useRef<any>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+
+  // Función para iniciar el micrófono y análisis de audio
+  const startMicrophone = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+      
+      // Crear contexto de audio para análisis
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      analyserRef.current = audioContextRef.current.createAnalyser();
+      const source = audioContextRef.current.createMediaStreamSource(stream);
+      source.connect(analyserRef.current);
+      analyserRef.current.fftSize = 256;
+      
+      setIsMicActive(true);
+      
+      // Analizar audio y animar Spline
+      const analyzeAudio = () => {
+        if (analyserRef.current) {
+          const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+          analyserRef.current.getByteFrequencyData(dataArray);
+          
+          // Calcular nivel promedio de audio
+          const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+          const normalizedLevel = average / 255;
+          setAudioLevel(normalizedLevel);
+          
+          // Animar el objeto Spline basado en el nivel de audio
+          if (splineRef.current && normalizedLevel > 0.1) {
+            try {
+              // Intentar animar rotación o escala basado en el audio
+              const scale = 1 + normalizedLevel * 0.3;
+              const rotation = normalizedLevel * Math.PI * 2;
+              
+              // Estos métodos dependen de la API de Spline
+              // Puedes ajustar según tu escena específica
+              if (splineRef.current.setVariable) {
+                splineRef.current.setVariable('audioLevel', normalizedLevel);
+              }
+            } catch (e) {
+              // Si la API de Spline no soporta estos métodos, ignorar
+            }
+          }
+        }
+        
+        animationFrameRef.current = requestAnimationFrame(analyzeAudio);
+      };
+      
+      analyzeAudio();
+    } catch (error) {
+      console.error('Error al acceder al micrófono:', error);
+      alert('Por favor, permite el acceso al micrófono para usar el asistente de voz.');
+    }
+  }, []);
+
+  // Función para detener el micrófono
+  const stopMicrophone = useCallback(() => {
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
+    }
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+    setIsMicActive(false);
+    setAudioLevel(0);
+  }, []);
+
+  // Toggle del micrófono
+  const toggleMicrophone = useCallback(() => {
+    if (isMicActive) {
+      stopMicrophone();
+    } else {
+      startMicrophone();
+    }
+  }, [isMicActive, startMicrophone, stopMicrophone]);
+
   useEffect(() => {
     // Función para ocultar el badge de Spline
     const hideSplineBadge = () => {
@@ -35,20 +127,57 @@ export default function Home() {
     // Limpiar después de 5 segundos (cuando ya debería estar todo cargado)
     setTimeout(() => clearInterval(interval), 5000);
     
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      clearInterval(interval);
+      stopMicrophone();
+    };
+  }, [stopMicrophone]);
 
   return (
     <main className="app-container">
       {/* Módulos del Curso de Inglés */}
-      <div className="sidebar sidebar-left">
+      <div className={`sidebar sidebar-left ${!isLeftSidebarOpen ? 'sidebar-closed' : ''}`}>
+        {/* Botón de cerrar neumórfico */}
+        <button 
+          className="neomorphic-close-btn"
+          onClick={() => setIsLeftSidebarOpen(!isLeftSidebarOpen)}
+          aria-label={isLeftSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path 
+              d={isLeftSidebarOpen ? "M18 6L6 18M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        
+        {/* Efecto de humo gradiente */}
+        <div className="sidebar-smoke-effect"></div>
         <div className="sidebar-frame">
-          <div className="sidebar-header-frame">
+          <div className="sidebar-header-frame dropdown-header" onClick={() => setIsModulesOpen(!isModulesOpen)}>
             <h2>Modules</h2>
+            <svg 
+              className={`dropdown-arrow ${isModulesOpen ? 'open' : ''}`}
+              width="12" 
+              height="12" 
+              viewBox="0 0 24 24" 
+              fill="none"
+            >
+              <path 
+                d="M6 9l6 6 6-6" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
         </div>
         
-        <div className="sidebar-frame">
+        <div className={`sidebar-frame modules-container ${!isModulesOpen ? 'collapsed' : ''}`}>
           <div className="sidebar-content">
             <div className="lesson-card active">
               <div className="lesson-number">01</div>
@@ -99,12 +228,65 @@ export default function Home() {
       {/* Contenido Central - Spline */}
       <div className="main-content">
         <Spline
-          scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode" 
+          scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode"
+          onLoad={(spline) => {
+            splineRef.current = spline;
+          }}
         />
+        
+        {/* Botón de micrófono flotante */}
+        <button 
+          className={`mic-button ${isMicActive ? 'active' : ''}`}
+          onClick={toggleMicrophone}
+          aria-label="Toggle microphone"
+        >
+          <div className="mic-pulse" style={{ transform: `scale(${1 + audioLevel * 0.5})` }}></div>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path 
+              d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" 
+              fill="currentColor"
+            />
+            <path 
+              d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            />
+          </svg>
+          {isMicActive && (
+            <div className="audio-visualizer">
+              <span style={{ height: `${audioLevel * 100}%` }}></span>
+              <span style={{ height: `${audioLevel * 80}%` }}></span>
+              <span style={{ height: `${audioLevel * 120}%` }}></span>
+              <span style={{ height: `${audioLevel * 90}%` }}></span>
+              <span style={{ height: `${audioLevel * 110}%` }}></span>
+            </div>
+          )}
+        </button>
       </div>
 
       {/* Sidebar Derecho - Search & Sources */}
-      <div className="sidebar sidebar-right">
+      <div className={`sidebar sidebar-right ${!isRightSidebarOpen ? 'sidebar-closed' : ''}`}>
+        {/* Botón de cerrar neumórfico */}
+        <button 
+          className="neomorphic-close-btn right"
+          onClick={() => setIsRightSidebarOpen(!isRightSidebarOpen)}
+          aria-label={isRightSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path 
+              d={isRightSidebarOpen ? "M18 6L6 18M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        
+        {/* Efecto de humo gradiente */}
+        <div className="sidebar-smoke-effect"></div>
         <div className="sidebar-frame">
           <div className="search-frame">
             <input 
