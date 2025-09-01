@@ -58,9 +58,7 @@ body {
 /* Header frame del sidebar */
 .sidebar-header-frame {
   padding: 1rem 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  text-align: center;
 }
 
 .sidebar-header-frame h2 {
@@ -69,248 +67,6 @@ body {
   font-weight: 700;
   margin: 0;
   letter-spacing: 0.5px;
-}
-
-/* Dropdown trigger */
-.dropdown-trigger {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0.5rem;
-  border-radius: 8px;
-  background: linear-gradient(145deg, #ffffff, #f8fafc);
-  border: 1px solid rgba(226, 232, 240, 0.3);
-}
-
-.dropdown-trigger:hover {
-  background: linear-gradient(145deg, #f8fafc, #f1f5f9);
-  box-shadow: 
-    2px 2px 6px rgba(148, 163, 184, 0.1),
-    -2px -2px 6px rgba(255, 255, 255, 0.8);
-}
-
-.dropdown-arrow {
-  display: flex;
-  align-items: center;
-  color: #6366f1;
-  transition: transform 0.3s ease;
-  font-weight: 600;
-}
-
-.dropdown-arrow.rotated {
-  transform: rotate(180deg);
-}
-
-/* Botones de cierre */
-.close-sidebar-btn {
-  background: linear-gradient(145deg, #ffffff, #f1f5f9);
-  border: 1px solid rgba(226, 232, 240, 0.5);
-  border-radius: 8px;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #64748b;
-  box-shadow: 
-    2px 2px 6px rgba(148, 163, 184, 0.1),
-    -2px -2px 6px rgba(255, 255, 255, 0.8);
-}
-
-.close-sidebar-btn:hover {
-  box-shadow: 
-    3px 3px 8px rgba(148, 163, 184, 0.15),
-    -3px -3px 8px rgba(255, 255, 255, 0.9);
-  color: #475569;
-}
-
-.close-sidebar-btn:active {
-  box-shadow: 
-    inset 2px 2px 4px rgba(148, 163, 184, 0.2),
-    inset -2px -2px 4px rgba(255, 255, 255, 0.7);
-}
-
-/* Botones para reabrir sidebars */
-.reopen-sidebar-btn {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(145deg, #ffffff, #f1f5f9);
-  border: 1px solid rgba(226, 232, 240, 0.5);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #64748b;
-  box-shadow: 
-    4px 4px 12px rgba(148, 163, 184, 0.15),
-    -4px -4px 12px rgba(255, 255, 255, 0.9);
-  z-index: 1000;
-}
-
-.reopen-left {
-  left: 10px;
-}
-
-.reopen-right {
-  right: 10px;
-}
-
-.reopen-sidebar-btn:hover {
-  box-shadow: 
-    6px 6px 16px rgba(148, 163, 184, 0.2),
-    -6px -6px 16px rgba(255, 255, 255, 1);
-  color: #475569;
-  transform: translateY(-50%) scale(1.05);
-}
-
-.reopen-sidebar-btn:active {
-  box-shadow: 
-    inset 2px 2px 6px rgba(148, 163, 184, 0.2),
-    inset -2px -2px 6px rgba(255, 255, 255, 0.8);
-  transform: translateY(-50%) scale(0.95);
-}
-
-/* Ocultar "Built with Spline" - Versión Completa */
-[data-spline-logo],
-.spline-logo,
-canvas + a,
-div[style*="position: absolute"][style*="bottom"],
-div[style*="position: fixed"][style*="bottom"],
-a[href*="spline.design"],
-a[href*="spline"],
-div[style*="z-index: 999999"],
-div[style*="z-index: 9999"],
-*[style*="built with spline" i],
-*[aria-label*="spline" i],
-*[title*="spline" i],
-span:contains("Built with Spline"),
-div:contains("Built with Spline"),
-a:contains("Built with Spline"),
-/* Selectores más específicos */
-div[style*="position: absolute"][style*="bottom: 16px"],
-div[style*="position: absolute"][style*="right: 16px"],
-div[style*="position: fixed"][style*="bottom: 16px"],
-div[style*="position: fixed"][style*="right: 16px"],
-/* Selectores para iframe */
-iframe + div[style*="position"],
-canvas + div[style*="position"],
-/* Selector general para elementos en esquina inferior */
-*[style*="bottom: 0"][style*="right: 0"],
-*[style*="bottom: 8px"][style*="right: 8px"],
-*[style*="bottom: 12px"][style*="right: 12px"],
-*[style*="bottom: 16px"][style*="right: 16px"],
-*[style*="bottom: 20px"][style*="right: 20px"] {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  position: absolute !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  width: 0 !important;
-  height: 0 !important;
-  z-index: -1 !important;
-}
-
-/* CSS adicional para ocultar Spline logo después del mounting */
-.main-content * {
-  position: relative;
-}
-
-.main-content *[style*="position: absolute"]:last-child {
-  display: none !important;
-}
-
-.main-content *[style*="position: fixed"]:last-child {
-  display: none !important;
-}
-
-/* Ocultar cualquier elemento en la esquina inferior derecha */
-.main-content > *:last-child div[style*="bottom"][style*="right"] {
-  display: none !important;
-}
-
-/* Fallback visual cuando Spline no carga */
-.spline-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f8f8fb 0%, #e8e8ed 100%);
-  position: relative;
-}
-
-.spline-placeholder {
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #ffffff, #f1f5f9);
-  box-shadow: 
-    20px 20px 40px rgba(148, 163, 184, 0.15),
-    -20px -20px 40px rgba(255, 255, 255, 0.9),
-    inset 5px 5px 10px rgba(148, 163, 184, 0.1),
-    inset -5px -5px 10px rgba(255, 255, 255, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.spline-placeholder-text {
-  color: #64748b;
-  font-size: 1.2rem;
-  font-weight: 500;
-  text-align: center;
-  opacity: 0.7;
-}
-
-@keyframes pulse {
-  0%, 100% { 
-    box-shadow: 
-      20px 20px 40px rgba(148, 163, 184, 0.15),
-      -20px -20px 40px rgba(255, 255, 255, 0.9),
-      inset 5px 5px 10px rgba(148, 163, 184, 0.1),
-      inset -5px -5px 10px rgba(255, 255, 255, 0.8);
-  }
-  50% { 
-    box-shadow: 
-      15px 15px 30px rgba(148, 163, 184, 0.2),
-      -15px -15px 30px rgba(255, 255, 255, 1),
-      inset 3px 3px 6px rgba(148, 163, 184, 0.15),
-      inset -3px -3px 6px rgba(255, 255, 255, 1);
-  }
-}
-
-/* Animación para el dropdown de módulos */
-.modules-dropdown {
-  transition: all 0.3s ease;
-  opacity: 1;
-  max-height: 1000px;
-  overflow: visible;
-}
-
-.modules-dropdown.closed {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-}
-
-/* Estado visual para indicar dropdown abierto/cerrado */
-.sidebar-header-frame.dropdown-open {
-  background: linear-gradient(145deg, #f8fafc, #f1f5f9);
-  box-shadow: 
-    2px 2px 6px rgba(148, 163, 184, 0.1),
-    -2px -2px 6px rgba(255, 255, 255, 0.8);
 }
 
 /* Contenido de los sidebars */
@@ -346,8 +102,7 @@ canvas + div[style*="position"],
 .lesson-card {
   background: linear-gradient(145deg, #ffffff, #f8fafc);
   border-radius: 12px;
-  padding: 0.8rem;
-  margin-bottom: 0.8rem;
+  padding: 0.6rem;
   box-shadow: 
     6px 6px 12px rgba(148, 163, 184, 0.15),
     -6px -6px 12px rgba(255, 255, 255, 0.8);
@@ -359,8 +114,6 @@ canvas + div[style*="position"],
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .lesson-card:hover {
@@ -455,15 +208,6 @@ canvas + div[style*="position"],
 .search-frame {
   padding: 1rem;
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.close-right {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
 }
 
 .neomorphic-search {
@@ -630,19 +374,6 @@ canvas + div[style*="position"],
     inset -5px -5px 20px rgba(255, 255, 255, 0.8);
   border-radius: 0;
   overflow: hidden;
-  transition: width 0.3s ease;
-}
-
-.main-content.expand-left {
-  width: 80%;
-}
-
-.main-content.expand-right {
-  width: 80%;
-}
-
-.main-content.expand-left.expand-right {
-  width: 100%;
 }
 
 /* Efectos de bordes internos suaves */
