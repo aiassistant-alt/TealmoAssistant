@@ -247,9 +247,10 @@ export default function Home() {
               // Mostrar error en debug
               const debug = document.querySelector('.spline-debug') as HTMLElement;
               if (debug) {
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
                 debug.innerHTML = `
                   <p>❌ Error loading Spline</p>
-                  <p>Error: ${error.message || 'Unknown error'}</p>
+                  <p>Error: ${errorMessage}</p>
                   <p>Trying alternative scene...</p>
                 `;
               }
