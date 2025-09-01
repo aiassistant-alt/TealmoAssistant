@@ -376,6 +376,18 @@ body {
   overflow: hidden;
 }
 
+/* Ocultar el badge "Built with Spline" */
+.main-content > div > div[style*="position: absolute"][style*="bottom: 0"][style*="right: 0"],
+.main-content > div > a[href*="spline.design"],
+.main-content > div > div > a[href*="spline.design"],
+[data-spline-watermark],
+div[style*="z-index: 2147483647"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* Efectos de bordes internos suaves */
 .main-content::before {
   content: '';
