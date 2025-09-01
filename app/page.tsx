@@ -227,12 +227,24 @@ export default function Home() {
 
       {/* Contenido Central - Spline */}
       <div className="main-content">
-        <Spline
-          scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode"
-          onLoad={(spline) => {
-            splineRef.current = spline;
-          }}
-        />
+        <div className="spline-container">
+          <Spline
+            scene="https://prod.spline.design/jpptJsbqA5KYoI05/scene.splinecode"
+            onLoad={(spline) => {
+              splineRef.current = spline;
+              console.log('🎯 Spline loaded successfully');
+            }}
+            onError={(error) => {
+              console.error('❌ Spline loading error:', error);
+            }}
+          />
+          <div className="spline-fallback">
+            <div className="loading-indicator">
+              <div className="loading-spinner"></div>
+              <p>Loading 3D Assistant...</p>
+            </div>
+          </div>
+        </div>
         
         {/* Botón de micrófono flotante */}
         <button 
