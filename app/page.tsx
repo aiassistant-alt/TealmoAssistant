@@ -239,13 +239,13 @@ export default function Home() {
               splineRef.current = spline;
               console.log('🎯 Spline loaded successfully', spline);
               // Ocultar debug cuando carga
-              const debug = document.querySelector('.spline-debug');
+              const debug = document.querySelector('.spline-debug') as HTMLElement;
               if (debug) debug.style.display = 'none';
             }}
             onError={(error) => {
               console.error('❌ Spline loading error:', error);
               // Mostrar error en debug
-              const debug = document.querySelector('.spline-debug');
+              const debug = document.querySelector('.spline-debug') as HTMLElement;
               if (debug) {
                 debug.innerHTML = `
                   <p>❌ Error loading Spline</p>
