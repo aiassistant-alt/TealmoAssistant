@@ -14,28 +14,25 @@ export default function Home() {
   useEffect(() => {
     const hideSplineLogo = () => {
       // Buscar y ocultar cualquier elemento que pueda ser el logo de Spline
-      const splineElements = document.querySelectorAll(`
-        a[href*="spline.design"],
-        a[href*="spline"],
-        div[style*="position: absolute"][style*="bottom"],
-        div[style*="position: fixed"][style*="bottom"],
-        *[style*="z-index: 999999"],
-        *[style*="z-index: 9999"]
-      `);
-
-      splineElements.forEach(el => {
-        if (el) {
-          el.style.display = 'none';
-          el.style.visibility = 'hidden';
-          el.style.opacity = '0';
-          el.style.pointerEvents = 'none';
-          el.style.position = 'absolute';
-          el.style.left = '-9999px';
-          el.style.top = '-9999px';
-          el.style.width = '0';
-          el.style.height = '0';
-          el.style.zIndex = '-1';
-        }
+      const splineLinks = document.querySelectorAll('a[href*="spline"]');
+      const positionedDivs = document.querySelectorAll('div[style*="position"][style*="bottom"]');
+      const highZIndexElements = document.querySelectorAll('*[style*="z-index: 999"]');
+      
+      [splineLinks, positionedDivs, highZIndexElements].forEach(nodeList => {
+        nodeList.forEach(el => {
+          if (el) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            el.style.top = '-9999px';
+            el.style.width = '0';
+            el.style.height = '0';
+            el.style.zIndex = '-1';
+          }
+        });
       });
     };
 
@@ -50,13 +47,13 @@ export default function Home() {
   }, []);
 
   const handleSplineLoad = () => {
-    console.log('✅ Spline cargado exitosamente');
+    console.log('Spline cargado exitosamente');
     setSplineLoaded(true);
     setSplineError(false);
   };
 
   const handleSplineError = () => {
-    console.error('❌ Error cargando Spline');
+    console.error('Error cargando Spline');
     setSplineError(true);
     setSplineLoaded(false);
   };
@@ -65,13 +62,14 @@ export default function Home() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (!splineLoaded && !splineError) {
-        console.warn('⚠️ Spline timeout - mostrando fallback');
+        console.warn('Spline timeout - mostrando fallback');
         setSplineError(true);
       }
     }, 15000); // 15 segundos timeout
 
     return () => clearTimeout(timeout);
   }, [splineLoaded, splineError]);
+
   return (
     <main className="app-container">
       {/* Botones para reabrir sidebars */}
@@ -96,17 +94,18 @@ export default function Home() {
           </svg>
         </button>
       )}
+
       {/* Módulos del Curso de Inglés */}
       {leftSidebarOpen && (
         <div className="sidebar sidebar-left">
           <div className="sidebar-frame">
-            <div className={`sidebar-header-frame ${modulesDropdownOpen ? 'dropdown-open' : ''}`}>
+            <div className={modulesDropdownOpen ? 'sidebar-header-frame dropdown-open' : 'sidebar-header-frame'}>
               <div 
                 className="dropdown-trigger"
                 onClick={() => setModulesDropdownOpen(!modulesDropdownOpen)}
               >
-                <h2>📚 Modules {modulesDropdownOpen ? '(' + 6 + ')' : ''}</h2>
-                <div className={`dropdown-arrow ${modulesDropdownOpen ? 'rotated' : ''}`}>
+                <h2>📚 Modules {modulesDropdownOpen ? '(6)' : ''}</h2>
+                <div className={modulesDropdownOpen ? 'dropdown-arrow rotated' : 'dropdown-arrow'}>
                   <svg 
                     width="14" 
                     height="14" 
@@ -128,49 +127,48 @@ export default function Home() {
             </div>
           </div>
           
-          <div className={`sidebar-frame modules-dropdown ${modulesDropdownOpen ? '' : 'closed'}`}>
+          <div className={modulesDropdownOpen ? 'sidebar-frame modules-dropdown' : 'sidebar-frame modules-dropdown closed'}>
             <div className="sidebar-content">
-                <div className="lesson-card active">
-                  <div className="lesson-number">01</div>
-                  <div className="lesson-info">
-                    <h3>Greetings & Introductions</h3>
-                    <p>Basic conversations</p>
-                  </div>
+              <div className="lesson-card active">
+                <div className="lesson-number">01</div>
+                <div className="lesson-info">
+                  <h3>Greetings & Introductions</h3>
+                  <p>Basic conversations</p>
                 </div>
-                <div className="lesson-card">
-                  <div className="lesson-number">02</div>
-                  <div className="lesson-info">
-                    <h3>Family & Friends</h3>
-                    <p>Describing people</p>
-                  </div>
+              </div>
+              <div className="lesson-card">
+                <div className="lesson-number">02</div>
+                <div className="lesson-info">
+                  <h3>Family & Friends</h3>
+                  <p>Describing people</p>
                 </div>
-                <div className="lesson-card">
-                  <div className="lesson-number">03</div>
-                  <div className="lesson-info">
-                    <h3>Daily Routines</h3>
-                    <p>Present simple tense</p>
-                  </div>
+              </div>
+              <div className="lesson-card">
+                <div className="lesson-number">03</div>
+                <div className="lesson-info">
+                  <h3>Daily Routines</h3>
+                  <p>Present simple tense</p>
                 </div>
-                <div className="lesson-card">
-                  <div className="lesson-number">04</div>
-                  <div className="lesson-info">
-                    <h3>Food & Dining</h3>
-                    <p>Restaurant vocabulary</p>
-                  </div>
+              </div>
+              <div className="lesson-card">
+                <div className="lesson-number">04</div>
+                <div className="lesson-info">
+                  <h3>Food & Dining</h3>
+                  <p>Restaurant vocabulary</p>
                 </div>
-                <div className="lesson-card locked">
-                  <div className="lesson-number">05</div>
-                  <div className="lesson-info">
-                    <h3>Travel & Directions</h3>
-                    <p>Getting around</p>
-                  </div>
+              </div>
+              <div className="lesson-card locked">
+                <div className="lesson-number">05</div>
+                <div className="lesson-info">
+                  <h3>Travel & Directions</h3>
+                  <p>Getting around</p>
                 </div>
-                <div className="lesson-card locked">
-                  <div className="lesson-number">06</div>
-                  <div className="lesson-info">
-                    <h3>Work & Business</h3>
-                    <p>Professional English</p>
-                  </div>
+              </div>
+              <div className="lesson-card locked">
+                <div className="lesson-number">06</div>
+                <div className="lesson-info">
+                  <h3>Work & Business</h3>
+                  <p>Professional English</p>
                 </div>
               </div>
             </div>
@@ -178,10 +176,13 @@ export default function Home() {
         </div>
       )}
 
-            {/* Contenido Central - Spline */}
-      <div className={`main-content ${!leftSidebarOpen ? 'expand-left' : ''} ${!rightSidebarOpen ? 'expand-right' : ''}`}>
+      {/* Contenido Central - Spline */}
+      <div className={
+        'main-content' + 
+        (!leftSidebarOpen ? ' expand-left' : '') + 
+        (!rightSidebarOpen ? ' expand-right' : '')
+      }>
         {splineError ? (
-          // Fallback visual cuando Spline falla
           <div className="spline-fallback">
             <div className="spline-placeholder">
               <div className="spline-placeholder-text">
